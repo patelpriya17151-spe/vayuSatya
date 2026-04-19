@@ -37,6 +37,14 @@ python -m http.server 8000
 ```
 *Navigate to `http://localhost:8000` to interact with the full dashboard.*
 
+## 💻 Hardware Architecture & BOM (Bill of Materials)
+To fulfill the requirements of a low-cost, scalable distributed sensor network, each node is engineered to cost **under ₹2,500**. 
+*   **Microcontroller:** ESP32 (Wi-Fi enabled) — ~₹450
+*   **Dust Sensor:** Plantower PMS5003 (PM2.5 / PM10) — ~₹1,400
+*   **Gas Sensor:** Winsen MQ136 (SO2 detection) — ~₹400
+*   **Enclosure & Misc:** PVC Housing + 5V Power Supply — ~₹100
+*   **Total Cost Per Node:** **₹2,350** 
+
 ## 📂 Project Architecture
 *   **`/backend/app.py`**: The central nervous system, processing live feeds, generating synthetic test alerts, and dispensing automated PDFs.
 *   **`/backend/vayusatya_1.py`**: Advanced data science and Machine Learning script compiling raw CPCB datasets into fingerprint topologies.

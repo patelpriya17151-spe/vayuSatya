@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VayuSatya | Inspector Secure Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #03120a;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(0, 0, 0, 0.25);
+    --navbar-bg: rgba(0, 0, 0, 0.2);
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --primary: #10B981; 
+    --primary-light: rgba(16, 185, 129, 0.2);
+    --primary-dark: #059669;
+    --accent: #3B82F6;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --font: "Inter", sans-serif;
+    --heading-font: "Outfit", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+  
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font);
+    font-size: 15px; line-height: 1.6; min-height: 100vh; overflow-x: hidden;
+  }
+
+  #main-bg-container {
+    position: fixed; inset: -50px; z-index: -1; background-color: var(--bg);
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
+      url('welcome-bg.jpg?v=2');
+    background-size: cover; background-position: center;
+    filter: brightness(0.6) contrast(1.1);
+  }
+
+  nav {
+    background: var(--navbar-bg); backdrop-filter: blur(25px);
+    border-bottom: 1px solid var(--border); padding: 0 40px;
+    display: flex; align-items: center; position: sticky; top: 0; z-index: 100; height: 80px;
+  }
+  
+  .nav-brand { display: flex; align-items: center; gap: 14px; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite ease-in-out; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.85); opacity: 0.7; } }
+  .nav-brand span { font-family: var(--heading-font); font-size: 20px; font-weight: 800; letter-spacing: -0.8px; color: white; }
+
+  .page { padding: 60px 40px; max-width: 1400px; margin: 0 auto; }
+  
+  .card {
+    background: var(--card-bg); backdrop-filter: blur(25px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 30px; box-shadow: var(--shadow); margin-bottom: 24px;
+    transition: all 0.3s ease;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.2); }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .card-title { font-family: var(--heading-font); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); }
+
+  .alert-row {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    padding: 20px; border-radius: 12px; margin-bottom: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.2s ease; border-left: 4px solid var(--primary);
+  }
+  .alert-row:hover { background: rgba(255,255,255,0.06); transform: translateX(5px); }
+
+  .ticket { font-family: var(--heading-font); font-size: 18px; font-weight: 700; color: #fff; }
+  .details { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  
+  .btn {
+    padding: 8px 16px; font-size: 12px; font-weight: 700; cursor: pointer;
+    border-radius: var(--radius-md); border: 1px solid var(--border);
+    background: rgba(255,255,255,0.1); color: #fff; transition: 0.2s;
+  }
+  .btn:hover { background: var(--primary); border-color: var(--primary); color: white; }
+  
+  .btn-back { padding: 10px 20px; font-size: 14px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.2); }
+  .btn-back:hover { background: rgba(255,255,255,0.2); }
+
+</style>
+</head>
+<body>
+
+<div id="main-bg-container"></div>
+
+<nav>
+  <div class="nav-brand">
+    <div class="dot" style="background:var(--accent);box-shadow:0 0 20px var(--accent);"></div>
+    <span style="background: linear-gradient(to right, #fff, #93C5FD); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VAYUSATYA | GSPCB Inspector Secure Portal</span>
+  </div>
+</nav>
+
+<div class="page">
+  <div style="margin-bottom: 16px;">
+    <a href="index.html" class="btn-back">← Back to Main Dashboard</a>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-bottom:24px; align-items:center;">
+    <div>
+      <h1 style="font-family: var(--heading-font); font-size: 32px;">GSPCB Incident Management Archives</h1>
+      <p style="color: var(--text-secondary)">Directly submitted air pollution complaints sorted chronologically.</p>
+    </div>
+    <button class="btn" style="padding:12px 24px; font-size:14px" onclick="loadArchives()">↻ Refresh Database</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">Archived Form-A Submissions</div></div>
+    <div id="admin-archives-list">
+      <div style="color:var(--text-secondary);font-size:14px">Authenticating and loading secure archives...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = 'http://localhost:5050/api';
+
+async function loadArchives() {
+  const list = document.getElementById('admin-archives-list');
+  list.innerHTML = '<div style="color:var(--text-secondary);font-size:14px">Loading secure form archives...</div>';
+  try {
+    const r = await fetch(API + '/archives');
+    const data = await r.json();
+    const archives = data.archives || [];
+    
+    if (!archives.length) {
+      list.innerHTML = '<div style="color:var(--text-secondary);font-size:14px">No officially routed complaints yet. Try submitting one via the Live Dashboard.</div>';
+      return;
+    }
+    
+    list.innerHTML = archives.map(a => `
+      <div class="alert-row">
+        <div>
+          <div class="ticket">TICKET ID: ${a.ticket_id}</div>
+          <div class="details">
+            <b>Location:</b> ${a.village} &nbsp; | &nbsp; 
+            <b>Timestamp:</b> ${new Date(a.timestamp).toLocaleString()} &nbsp; | &nbsp; 
+            <b>Status:</b> <span style="color:var(--primary)">${a.status}</span>
+          </div>
+          <div class="details" style="opacity:0.7; margin-top:4px;">
+            <b>Telemetry Captured:</b> PM2.5 = ${a.data.pm25} µg/m³ &nbsp;|&nbsp; SO2 = ${a.data.so2} µg/m³ &nbsp;|&nbsp; Wind: ${a.data.wind_direction} (${a.data.wind_bearing}°)
+          </div>
+        </div>
+        <div>
+          <button class="btn">View Telemetry</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = '<div style="color:red;font-size:14px">Error fetching from GSPCB backend API (Offline).</div>';
+  }
+}
+
+// Auto-load on visit with Security Gate
+window.addEventListener('load', () => {
+  const pin = prompt("GSPCB SECURE PORTAL\\nEnter Inspector Access PIN:");
+  if (pin === "2026") {
+    loadArchives();
+  } else {
+    document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:40vh;font-family:Outfit,sans-serif;font-size:48px;letter-spacing:10px;'>ACCESS DENIED</h1>";
+    setTimeout(() => window.location.href = 'index.html', 2000);
+  }
+});
+
+</script>
+</body>
+</html>

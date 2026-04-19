@@ -865,7 +865,10 @@
         <div class="card-header"><div class="card-title" data-i18n="actions_title">Actions</div></div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <button class="btn btn-primary" style="width:100%;height:50px" onclick="loadComplaint()" data-i18n="btn_load">↺ Load Current Sensor Data</button>
-          <button class="btn btn-cta" style="width:100%" id="download-btn" onclick="downloadComplaint()" disabled data-i18n="btn_download">↓ Download GSPCB Form-A PDF</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-cta" style="flex:1" id="download-btn" onclick="downloadComplaint()" disabled data-i18n="btn_download">↓ Download PDF</button>
+            <button class="btn btn-green" style="flex:1" id="direct-submit-btn" onclick="submitDirectToGSPCB()" disabled>🚀 Direct Submit to GSPCB</button>
+          </div>
           <p style="font-size:12px;color:var(--text-secondary);text-align:center;line-height:1.4" data-i18n="pdf_note">PDF generates automatically with all sensor readings<br>pre-filled in GSPCB Form-A format</p>
         </div>
       </div>
@@ -893,6 +896,8 @@
     <div style="color:var(--text-secondary);font-size:12px" data-i18n="loading">Loading...</div>
   </div>
 </div>
+
+
 
 <!-- PAGE 5: ALERTS -->
 <div class="page" id="page-alerts">
@@ -1044,16 +1049,17 @@ function renderDashboard(data) {
   // Nodes
   const nodeGrid = document.getElementById('node-grid');
   nodeGrid.innerHTML = readings.map(r => `
-    <div class="node-card ${r.alert ? 'alert-node' : ''}">
-      <div class="node-status ${r.alert ? 'alert' : ''}"></div>
+    <div class="node-card ${r.fault_detected ? 'alert-node' : (r.alert ? 'alert-node' : '')}" style="${r.fault_detected?'border-color:#F59E0B;':''}">
+      <div class="node-status ${r.fault_detected ? 'alert' : (r.alert ? 'alert' : '')}" style="${r.fault_detected?'background:#F59E0B;box-shadow:0 0 10px #F59E0B;':''}"></div>
       <div class="node-id">${r.node_id}</div>
       <div class="node-readings">
-        <div class="node-reading">PM2.5 <span style="color:${r.pm25>60?'var(--danger)':'var(--primary)'}">${r.pm25}</span></div>
-        <div class="node-reading">SO2 <span style="color:${r.so2>40?'var(--warning)':'var(--primary)'}">${r.so2}</span></div>
+        <div class="node-reading">PM2.5 <span style="color:${r.fault_detected?'#F59E0B':(r.pm25>60?'var(--danger)':'var(--primary)')}">${r.fault_detected?'ERR':r.pm25}</span></div>
+        <div class="node-reading">SO2 <span style="color:${r.fault_detected?'#F59E0B':(r.so2>40?'var(--warning)':'var(--primary)')}">${r.fault_detected?'ERR':r.so2}</span></div>
       </div>
       <div class="node-wind">💨 ${r.wind_speed}km/h @ ${r.wind_direction}°</div>
       <div style="margin-top:12px">
-        ${r.alert ? '<span class="badge badge-red">CRITICAL SURGE</span>' : '<span class="badge badge-green">NORMAL OPERATION</span>'}
+        ${r.fault_detected ? '<span class="badge badge-orange" style="background:rgba(245,158,11,0.2);color:#FDE68A;">MAINTENANCE DISPATCH NEEDED</span>' : 
+         (r.alert ? '<span class="badge badge-red">CRITICAL SURGE</span>' : '<span class="badge badge-green">NORMAL OPERATION</span>')}
       </div>
     </div>`).join('');
   document.getElementById('node-count').textContent = readings.length + ' online';
@@ -1229,10 +1235,12 @@ async function loadComplaint() {
     currentFusion = data;
     renderComplaintPreview(data);
     document.getElementById('download-btn').disabled = false;
+    document.getElementById('direct-submit-btn').disabled = false;
   } catch(e) {
     currentFusion = getDemoFusion();
     renderComplaintPreview(currentFusion);
     document.getElementById('download-btn').disabled = false;
+    document.getElementById('direct-submit-btn').disabled = false;
   } finally {
     document.getElementById('complaint-loading').style.display = 'none';
   }
@@ -1407,14 +1415,37 @@ function renderDemoMode() {
   const demo = {readings:[
     {node_id:"VPI-N01",village:"Vapi",pm25:45.2,so2:12.1,wind_direction:245,wind_speed:8.3,
      aqi:85,aqi_label:"Satisfactory",alert:false,source_type:"Background",surge_detected:false,timestamp:new Date().toISOString()},
-    {node_id:"VPI-N02",village:"Vapi",pm25:52.1,so2:15.4,wind_direction:251,wind_speed:9.1,
-     aqi:97,aqi_label:"Satisfactory",alert:false,source_type:"Background",surge_detected:false,timestamp:new Date().toISOString()},
-    {node_id:"VPI-N03",village:"Vapi",pm25:48.7,so2:13.8,wind_direction:248,wind_speed:7.9,
-     aqi:91,aqi_label:"Satisfactory",alert:false,source_type:"Background",surge_detected:false,timestamp:new Date().toISOString()}
+    {node_id:"VPI-N02",village:"Vapi",pm25:52.8,so2:15.3,wind_direction:242,wind_speed:8.1,
+     aqi:95,aqi_label:"Satisfactory",alert:false,source_type:"Background",surge_detected:false,timestamp:new Date().toISOString()}
   ]};
   renderDashboard(demo);
-  document.getElementById('last-update').textContent = 'Demo mode — start backend for live data';
 }
+
+// ─── ADMIN & SUBMIT LOGIC ───
+async function submitDirectToGSPCB() {
+  if (!currentFusion) return;
+  const btn = document.getElementById('direct-submit-btn');
+  btn.innerHTML = "Sending...";
+  btn.disabled = true;
+  try {
+    const res = await fetch(API + '/submit-complaint', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentFusion)
+    });
+    const d = await res.json();
+    alert(`✅ SUCCESS: Form-A successfully transmitted to Headquarters.\n\nTracking Ticket: ${d.ticket_id}`);
+    btn.innerHTML = "Submitted!";
+    btn.className = "btn btn-ghost";
+  } catch(e) {
+    alert('Error submitting complaint directly.');
+    btn.innerHTML = "🚀 Direct Submit to GSPCB";
+    btn.disabled = false;
+  }
+}
+
+
+
 
 function renderDemoSurge() {
   const demo = {readings:[

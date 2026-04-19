@@ -39,6 +39,7 @@ def index():
 # In-memory log (last 200 readings per village)
 _reading_log = {v: [] for v in VILLAGES}
 _alerts = []
+_archives = [] # Store submitted GSPCB forms
 
 def log_reading(reading):
     village = reading["village"]
@@ -46,6 +47,13 @@ def log_reading(reading):
     if len(_reading_log[village]) > 200:
         _reading_log[village] = _reading_log[village][-200:]
     if reading.get("alert"):
+        # Simulated SMS / WhatsApp Workflow for Sarpanch
+        print(f"==================================================")
+        print(f"MOCK SMS/WHATSAPP DISPATCH INITIATED")
+        print(f"To: Sarpanch, {reading['village']}")
+        print(f"Msg: ACTION REQUIRED. PM2.5 Alert ({reading['pm25']} µg/m³) detected at Node {reading['node_id']}.")
+        print(f"==================================================", flush=True)
+            
         _alerts.insert(0, {**reading, "acknowledged": False})
         if len(_alerts) > 50:
             _alerts.pop()
@@ -130,6 +138,34 @@ def get_industries():
             continue
         result.append({**ind, "currently_active": is_industry_active(ind, now)})
     return jsonify({"industries": result})
+
+import random
+
+@app.route("/api/submit-complaint", methods=["POST"])
+def submit_complaint():
+    """Mock one-step direct API submission to GSPCB Headquarter Servers"""
+    data = request.json
+    ticket_id = f"GSPCB-2026-{random.randint(1000, 9999)}"
+    
+    archive_entry = {
+        "ticket_id": ticket_id,
+        "village": data.get("village", "Unknown"),
+        "timestamp": datetime.now().isoformat(),
+        "status": "Submitted & Awaiting Inspection",
+        "data": data
+    }
+    _archives.insert(0, archive_entry)
+    
+    return jsonify({
+        "status": "success",
+        "ticket_id": ticket_id,
+        "message": "Form-A successfully transmitted to GSPCB."
+    })
+
+@app.route("/api/archives", methods=["GET"])
+def get_archives():
+    """Fetch archived Form-A submissions for Admin UI"""
+    return jsonify({"archives": _archives})
 
 @app.route("/api/alerts", methods=["GET"])
 def get_alerts():

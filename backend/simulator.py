@@ -99,6 +99,15 @@ def generate_reading(node_id, village, force_surge=False):
                   "Agricultural/Seasonal" if (is_surge and so2 <= 15 and (4 <= hour <= 8 or 17 <= hour <= 20)) else \
                   "Industrial" if is_surge else "Background"
 
+    # Simulated Hardware Fault Logic
+    fault_detected = False
+    if random.random() < 0.02:  # 2% chance of hardware failure
+        fault_detected = True
+        pm25 = -1
+        so2 = -1
+        aqi_label = "ERR"
+        aqi_color = "#9CA3AF" # Grey for offline 
+
     return {
         "node_id": node_id,
         "village": village,
@@ -115,7 +124,8 @@ def generate_reading(node_id, village, force_surge=False):
         "surge_detected": is_surge,
         "surge_intensity": surge_intensity,
         "source_type": source_type,
-        "alert": pm25 > 60 or so2 > 40
+        "alert": pm25 > 60 or so2 > 40,
+        "fault_detected": fault_detected
     }
 
 def get_all_readings(force_surge_village=None):
