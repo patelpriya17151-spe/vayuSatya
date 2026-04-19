@@ -13,9 +13,8 @@ Imagine a city where residents receive real-time alerts about harmful air qualit
 
 ## Team Attribution
 - **Project Lead:** Priya Patel
-- **Development Team:**  Ku2507u0309, Anya Singh, Suresh Kumar
-- **Quality Assurance:** Rishi Mehta  
-- **Marketing and Outreach:** Simran Kaur
+- **Development Team:**  shweta, tejasvi
+
 
 ## Architecture Diagram Description
 The VayuSatya architecture consists of IoT-enabled air quality sensors collecting data, which is transmitted to a cloud system for processing and analysis. The processed data is displayed in a user-friendly dashboard for stakeholders and end-users.
