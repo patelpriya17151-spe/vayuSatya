@@ -1322,49 +1322,69 @@ async function loadIndustries() {
 }
 
 function renderIndustries(list) {
-  document.getElementById('industries-list').innerHTML = list.map(ind => `
+  const t = TRANSLATIONS[currentLang] || {};
+  document.getElementById('industries-list').innerHTML = list.map(ind => {
+    const name = (t.ind_names && t.ind_names[ind.name]) || ind.name;
+    const type = (t.ind_types && t.ind_types[ind.type]) || ind.type;
+    const loc  = (t.ind_locations && t.ind_locations[ind.location]) || ind.location;
+    const activeLabel = ind.currently_active ? (t.active_now || '● ACTIVE NOW') : (t.inactive || 'Inactive');
+    const pollLabel  = t.pollutants_label || 'Pollutants';
+    const dirLabel   = t.direction_label  || 'Direction';
+    const distLabel  = t.distance_label   || 'Distance';
+    const shiftLabel = t.shifts_label     || 'Shifts';
+    return `
     <div class="industry-row">
       <div class="industry-icon" style="background:${ind.currently_active?'var(--red-bg)':'var(--bg3)'};font-size:18px">🏭</div>
       <div class="industry-info" style="flex:1">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div>
-            <div class="industry-name" style="font-size:14px">${ind.name}</div>
-            <div class="industry-loc">${ind.location} · ${ind.type}</div>
+            <div class="industry-name" style="font-size:14px">${name}</div>
+            <div class="industry-loc">${loc} · ${type}</div>
           </div>
-          <span class="badge ${ind.currently_active?'badge-red':'badge-green'}">${ind.currently_active?'● ACTIVE NOW':'Inactive'}</span>
+          <span class="badge ${ind.currently_active?'badge-red':'badge-green'}">${activeLabel}</span>
         </div>
         <div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap">
-          <span style="font-size:11px;color:var(--text2)">Pollutants: <b style="color:var(--text)">${ind.pollutants.join(', ')}</b></span>
-          <span style="font-size:11px;color:var(--text2)">Direction: <b style="color:var(--text)">${ind.direction_from_village_deg}°</b></span>
-          <span style="font-size:11px;color:var(--text2)">Distance: <b style="color:var(--text)">${ind.distance_km}km</b></span>
+          <span style="font-size:11px;color:var(--text2)">${pollLabel}: <b style="color:var(--text)">${ind.pollutants.join(', ')}</b></span>
+          <span style="font-size:11px;color:var(--text2)">${dirLabel}: <b style="color:var(--text)">${ind.direction_from_village_deg}°</b></span>
+          <span style="font-size:11px;color:var(--text2)">${distLabel}: <b style="color:var(--text)">${ind.distance_km}km</b></span>
         </div>
-        <div style="margin-top:4px;font-size:11px;color:var(--text2)">Shifts: ${ind.shifts.map(s=>s.start+' – '+s.end).join(' | ')}</div>
+        <div style="margin-top:4px;font-size:11px;color:var(--text2)">${shiftLabel}: ${ind.shifts.map(s=>s.start+' – '+s.end).join(' | ')}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ─── ALERTS ───
 async function loadAlerts() {
+  const t = TRANSLATIONS[currentLang] || {};
   try {
     const data = await apiFetch('/alerts');
     const alerts = data.alerts || [];
     if (!alerts.length) {
-      document.getElementById('alerts-list').innerHTML = '<div style="color:var(--text2);font-size:13px;padding:20px;text-align:center">No alerts recorded yet. Alerts appear when PM2.5 > 60 µg/m³ or SO2 > 40 µg/m³</div>';
+      const noAlertMsg = t.no_alerts || 'No alerts recorded yet. Alerts appear when PM2.5 > 60 µg/m³ or SO2 > 40 µg/m³';
+      document.getElementById('alerts-list').innerHTML = `<div style="color:var(--text2);font-size:13px;padding:20px;text-align:center">${noAlertMsg}</div>`;
       return;
     }
-    document.getElementById('alerts-list').innerHTML = alerts.map(a => `
+    const areaNodeLabel = t.area_node || 'Area Node';
+    const windLabel2 = t.wind_analyzed || 'Wind vector analyzed';
+    const fileBtn = t.file_complaint || 'File Complaint →';
+    document.getElementById('alerts-list').innerHTML = alerts.map(a => {
+      const severeTxt = t.severe || 'SEVERE';
+      const modTxt = t.moderate_badge || 'MODERATE';
+      return `
       <div class="alert-item ${a.pm25 < 120 ? 'moderate-alert' : ''}">
         <div style="min-width:100px">
           <div class="alert-time">${new Date(a.timestamp).toLocaleTimeString()}</div>
-          <div class="badge ${a.pm25>120?'badge-red':'badge-orange'}" style="margin-top:8px">${a.pm25>120?'SEVERE':'MODERATE'}</div>
+          <div class="badge ${a.pm25>120?'badge-red':'badge-orange'}" style="margin-top:8px">${a.pm25>120?severeTxt:modTxt}</div>
         </div>
         <div class="alert-content">
-          <div class="alert-title">${a.village} — Area Node ${a.node_id}</div>
+          <div class="alert-title">${a.village} — ${areaNodeLabel} ${a.node_id}</div>
           <div class="alert-desc">PM2.5: <b style="color:var(--text)">${a.pm25} µg/m³</b> | SO2: <b style="color:var(--text)">${a.so2} µg/m³</b></div>
-          <div class="alert-desc" style="font-size:12px;opacity:0.8">Wind vector analyzed: ${a.wind_speed}km/h @ ${a.wind_direction}°</div>
+          <div class="alert-desc" style="font-size:12px;opacity:0.8">${windLabel2}: ${a.wind_speed}km/h @ ${a.wind_direction}°</div>
         </div>
-        <button class="btn btn-primary" style="padding:8px 16px" onclick="jumpToComplaint('${a.village}')">File Complaint →</button>
-      </div>`).join('');
+        <button class="btn btn-primary" style="padding:8px 16px" onclick="jumpToComplaint('${a.village}')">${fileBtn}</button>
+      </div>`;
+    }).join('');
   } catch(e) {
     document.getElementById('alerts-list').innerHTML = '<div style="color:var(--text-secondary);font-size:14px;padding:40px;text-align:center">Could not load alert history. Check backend connection.</div>';
   }
@@ -1616,6 +1636,29 @@ const TRANSLATIONS = {
     engine_label:'● VayuSatya એન્જિન',
     // Welcome
     welcome_subtitle:'હાઇપરલોકલ પ્રદૂષણ પ્રમાણ એન્જિન', welcome_btn:'એન્જિન શરૂ કરો',
+    // Dynamic UI labels
+    active_now:'● અત્યારે સક્રિય', inactive:'નિષ્ક્રિય',
+    area_node:'વિસ્તાર નોડ', wind_analyzed:'પવન વિશ્લેષણ',
+    file_complaint:'ફરિયાદ નોંધો →', severe:'ગંભીર', moderate_badge:'મધ્યમ',
+    pollutants_label:'પ્રદૂષકો', direction_label:'દિશા',
+    distance_label:'અંતર', shifts_label:'શિફ્ટ',
+    ind_names:{
+      'Aarti Industries Ltd':'આર્તી ઇન્ડસ્ટ્રીઝ લિ.',
+      'Deepak Nitrite Ltd':'દીપક નાઇટ્રાઇટ લિ.',
+      'Ankleshwar Dye & Chemical Unit 7':'અંકલેશ્વર ડાઇ અને કેમિકલ યુનિટ ૭',
+      'Vatva Chemical Works':'વટવા કેમિકલ વર્ક્સ',
+      'Gujarat Fluorochemicals':'ગુજરાત ફ્લૂરોકેમિકલ્સ',
+    },
+    ind_types:{
+      'Chemical':'રાસાયણિક', 'Chemical/Dyes':'રાસાયણિક/રંજક',
+      'Dyes & Intermediates':'રંજક અને મધ્યવર્તી',
+    },
+    ind_locations:{
+      'Vapi GIDC Phase-1':'વાપી GIDC ફેઝ-૧',
+      'Vapi GIDC Phase-2':'વાપી GIDC ફેઝ-૨',
+      'Ankleshwar GIDC':'અંકલેશ્વર GIDC',
+      'Vatva GIDC':'વટવા GIDC',
+    },
   },
   hi: {
     // Nav
@@ -1667,6 +1710,29 @@ const TRANSLATIONS = {
     engine_label:'● VayuSatya इंजन',
     // Welcome
     welcome_subtitle:'हाइपरलोकल प्रदूषण साक्ष्य इंजन', welcome_btn:'इंजन शुरू करें',
+    // Dynamic UI labels
+    active_now:'● अभी सक्रिय', inactive:'निष्क्रिय',
+    area_node:'क्षेत्र नोड', wind_analyzed:'हवा विश्लेषण',
+    file_complaint:'शिकायत दर्ज करें →', severe:'गंभीर', moderate_badge:'मध्यम',
+    pollutants_label:'प्रदूषक', direction_label:'दिशा',
+    distance_label:'दूरी', shifts_label:'शिफ्ट',
+    ind_names:{
+      'Aarti Industries Ltd':'आर्ती इंडस्ट्रीज लि.',
+      'Deepak Nitrite Ltd':'दीपक नाइट्राइट लि.',
+      'Ankleshwar Dye & Chemical Unit 7':'अंकलेश्वर डाई और केमिकल यूनिट 7',
+      'Vatva Chemical Works':'वटवा केमिकल वर्क्स',
+      'Gujarat Fluorochemicals':'गुजरात फ्लूरोकेमिकल्स',
+    },
+    ind_types:{
+      'Chemical':'रासायनिक', 'Chemical/Dyes':'रासायनिक/रंजक',
+      'Dyes & Intermediates':'रंजक और मध्यवर्ती',
+    },
+    ind_locations:{
+      'Vapi GIDC Phase-1':'वापी GIDC चरण-1',
+      'Vapi GIDC Phase-2':'वापी GIDC चरण-2',
+      'Ankleshwar GIDC':'अंकलेश्वर GIDC',
+      'Vatva GIDC':'वटवा GIDC',
+    },
   }
 };
 
