@@ -1,0 +1,14 @@
+Flask
+pandas
+reportlab
+requests
+python-dotenv
+
+# Additional recommended dependencies
+numpy
+matplotlib
+scikit-learn
+BeautifulSoup4
+pytest
+flask-restful
+Flask-Cors
