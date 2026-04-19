@@ -11,17 +11,29 @@
 
 ## 🏅 Built For
 
-**LD Hackathon — April 2026**
+**TrakshaSpark Hackathon — April 2026**
 - **Theme:** Environmental Tech / Civic Tech
 - **Challenge:** TS-09 — Hyperlocal Pollution Evidence Engine
+- **Organized by:** TrakshaSpark
+- **Institution:** Karnavati University
 
 ---
 
-## 👥 Team TS-09
+## 👥 Team TS-09 — Karnavati University
 
-| Name | Role |
-|---|---|
-| **Priya Patel** ([@patelpriya17151-spe](https://github.com/patelpriya17151-spe)) | Full Stack Developer & ML Engineer |
+| Name | Role | GitHub |
+|---|---|---|
+| **Priya Patel** | Full Stack Developer & ML Engineer | [@patelpriya17151-spe](https://github.com/patelpriya17151-spe) |
+| **Tejasvi Parikh** | Frontend Developer | — |
+| **Shweta Sharma** | Backend Developer | — |
+
+---
+
+## 🎥 Demo Video
+
+> 📹 **[Click here to watch the live demo](#)** ← *Replace `#` with your video link after uploading*
+
+---
 
 ---
 
