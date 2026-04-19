@@ -31,7 +31,7 @@
 
 ## 🎥 Demo Video
 
-> 📹 **[Click here to watch the live demo](https://drive.google.com/file/d/1Q-7PN0HXbU7WUEd-A2OGpGAW9roct5od/view?usp=sharing)** ← *Replace `#` with your video link after uploading*
+> 📹 **[Click here to watch the live demo](https://drive.google.com/file/d/1Q-7PN0HXbU7WUEd-A2OGpGAW9roct5od/view?usp=sharing)** 
 
 ---
 
