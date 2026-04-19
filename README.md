@@ -23,9 +23,9 @@
 
 | Name | Role | GitHub |
 |---|---|---|
-| **Priya Patel** | Full Stack Developer & ML Engineer | [@patelpriya17151-spe](https://github.com/patelpriya17151-spe) |
-| **Tejasvi Parikh** | Frontend Developer | — |
-| **Shweta Sharma** | Backend Developer | — |
+| **Priya Patel** | Full Stack Developer & ML Engineer | [patelpriya](https://github.com/patelpriya17151-spe) |
+| **Tejasvi Parikh** | Frontend Developer | — | [TejasviParikh](https://github.com/ku2507u0308-alt)
+| **Shweta Sharma** | Backend Developer | — | [SHwetaSharma](https://github.com/sharmashwetaasha0407-hub)
 
 ---
 
