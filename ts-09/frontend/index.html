@@ -677,6 +677,7 @@
       <button class="lang-btn" id="lang-gu" onclick="setLanguage('gu')" aria-label="ગુજરાતી ભાષા">ગુ</button>
       <button class="lang-btn" id="lang-hi" onclick="setLanguage('hi')" aria-label="हिंदी भाषा">हि</button>
     </div>
+    <a href="admin.html" class="btn btn-ghost" style="padding: 6px 12px; font-size: 11px; border-color: var(--primary); color: var(--primary);">ADMIN CONTROL</a>
     <div class="loading" id="global-loading"><div class="loading-dot" style="background:var(--primary)"></div><div class="loading-dot" style="background:var(--primary)"></div><div class="loading-dot" style="background:var(--primary)"></div></div>
     <span id="last-update" style="font-size:12px;font-weight:500;color:var(--text-secondary)" data-i18n="connecting">Connecting...</span>
   </div>
@@ -761,13 +762,30 @@
   </div>
 
   <!-- History chart -->
-  <div class="card">
-    <div class="card-header"><div class="card-title">PM2.5 History (last 20 readings)</div></div>
-    <div style="position:relative;height:180px">
-      <canvas id="history-chart" role="img" aria-label="PM2.5 history over last 20 readings"></canvas>
+    <div class="card">
+      <div class="card-header"><div class="card-title">PM2.5 History (last 20 readings)</div></div>
+      <div style="position:relative;height:180px">
+        <canvas id="history-chart" role="img" aria-label="PM2.5 history over last 20 readings"></canvas>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Resident Notification Sidebar (Mock SMS/WhatsApp) -->
+  <style>
+    #resident-alerts {
+      position: fixed; right: 20px; bottom: 100px; width: 320px; z-index: 1000;
+      display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+    }
+    .notification-bubble {
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transform: translateX(400px); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto; border-left: 4px solid var(--primary);
+    }
+    .notification-bubble.show { transform: translateX(0); }
+    .notif-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+  </style>
+  <div id="resident-alerts"></div>
 
 <!-- ═══════════════════════════════════════════
      PAGE 2: SOURCE ANALYSIS
@@ -866,6 +884,7 @@
         <div style="display:flex;flex-direction:column;gap:16px">
           <button class="btn btn-primary" style="width:100%;height:50px" onclick="loadComplaint()" data-i18n="btn_load">↺ Load Current Sensor Data</button>
           <button class="btn btn-cta" style="width:100%" id="download-btn" onclick="downloadComplaint()" disabled data-i18n="btn_download">↓ Download GSPCB Form-A PDF</button>
+          <button class="btn btn-green" style="width:100%; height:50px; background: #059669;" id="direct-submit-btn" onclick="submitDirectToGSPCB()" disabled>🚀 One-Step Submit to GSPCB</button>
           <p style="font-size:12px;color:var(--text-secondary);text-align:center;line-height:1.4" data-i18n="pdf_note">PDF generates automatically with all sensor readings<br>pre-filled in GSPCB Form-A format</p>
         </div>
       </div>
@@ -1097,6 +1116,29 @@ function renderDashboard(data) {
   document.getElementById('status-nodes').textContent = `● Nodes: ${readings.length} online`;
   document.getElementById('status-village').textContent = `● Village: ${currentVillage}`;
   document.getElementById('status-time').textContent = `🕒 ${new Date().toLocaleTimeString()}`;
+
+  // Notify Resident simulation
+  if (worst.alert) {
+    showResidentNotification(worst);
+  }
+}
+
+function showResidentNotification(r) {
+  const container = document.getElementById('resident-alerts');
+  const id = 'notif-' + Date.now();
+  const html = `
+    <div class="notification-bubble" id="${id}">
+      <div class="notif-header">💬 WhatsApp / SMS Alert</div>
+      <div style="font-family:var(--heading-font);font-size:14px;font-weight:700">ALERT: ${r.village} Air Quality</div>
+      <div style="font-size:12px;margin-top:4px">PM2.5 is <span style="color:var(--danger)">${r.pm25} µg/m³</span>. Residents are advised to stay indoors. Hyperlocal node ${r.node_id} detected surge.</div>
+    </div>
+  `;
+  container.insertAdjacentHTML('afterbegin', html);
+  setTimeout(() => document.getElementById(id).classList.add('show'), 100);
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('show'); setTimeout(() => el.remove(), 500); }
+  }, 6000);
 }
 
 function renderHistoryChart() {

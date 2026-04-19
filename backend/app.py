@@ -190,6 +190,34 @@ def check_industrial_risk(wind_deg: float, wind_speed: float) -> tuple:
         return "MODERATE", f"Pollution from NW ({source_dir:.0f}°) — Naroda area. Monitor PM2.5."
     return "LOW", f"Wind source: {source_dir:.0f}° ({wind_direction_to_label(source_dir)}). No major industrial zone upwind."
 
+@app.route("/api/nodes/<node_id>/maintenance", methods=["POST"])
+def dispatch_maintenance(node_id):
+    """Workflow-based fault resolution dispatch"""
+    # Logic: Mark the node as 'dispatched' or 'repair in progress'
+    # In a real system, this would trigger a technician notification
+    return jsonify({
+        "status": "success",
+        "message": f"Maintenance dispatch ticket created for Node {node_id}.",
+        "dispatched_at": datetime.now().isoformat(),
+        "technician": "VayuSatya Rapid Response Team (Valsad/Bharuch)"
+    })
+
+@app.route("/api/bom", methods=["GET"])
+def get_bom():
+    """Bill of Materials justification for sensor nodes (< ₹2,500 target)"""
+    return jsonify({
+        "target_cost": 2500,
+        "currency": "INR",
+        "components": [
+            {"part": "Plantower PMS5003 (PM2.5 Sensor)", "cost": 1400, "verified": True},
+            {"part": "Winsen MQ136 (SO2 Electrochemical Sensor)", "cost": 420, "verified": True},
+            {"part": "ESP32 WROOM (Wi-Fi/BT MCU)", "cost": 380, "verified": True},
+            {"part": "Enclosure & Power Supply (5V/2A)", "cost": 150, "verified": True}
+        ],
+        "total": 2350,
+        "justification": "Low-cost distributed architecture allows for hyperlocal sensing at 1/50th the cost of CAAQMS stations."
+    })
+
 @app.route("/api/weather", methods=["GET"])
 def get_weather():
     if not OWM_API_KEY:

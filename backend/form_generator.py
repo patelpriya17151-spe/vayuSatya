@@ -164,7 +164,10 @@ def generate_form_a(fusion_result, sarpanch_name="", village_name="", gram_panch
     if top_source:
         field_row("Name of Probable Source:", top_source.get("name", "N/A"), highlight=True)
         field_row("Location of Industry:", top_source.get("location", "N/A"))
-        field_row("Industry Type:", top_source.get("type", "N/A"))
+        field_row("Industry Activities / Type:", f"{top_source.get('type', 'N/A')} — {top_source.get('production_type', 'N/A')}")
+        field_row("Chimney / Stack Height:", f"{top_source.get('stack_height_m', 'N/A')} meters (above GL)")
+        field_row("Fuel Type in Use:", top_source.get("fuel_type", "N/A"))
+        field_row("Air Pollution Control System:", top_source.get("apcs", "N/A"))
         field_row("Known Pollutants:", ", ".join(top_source.get("pollutants", [])))
         field_row("Shift Active at Detection:", "YES — Industry was in active shift" if top_source.get("is_active") else "NO — Outside normal operating hours")
         field_row("Distance from Village:", f"{top_source.get('distance_km', 'N/A')} km")
