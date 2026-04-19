@@ -1,0 +1,11 @@
+[
+    {"id":"IND001","name":"Aarti Industries Ltd","location":"Vapi GIDC Phase-1","village":"Vapi","type":"Chemical",
+     "pollutants":["SO2","PM2.5","NOx"],"shifts":[{"start":"06:00","end":"14:00"},{"start":"14:00","end":"22:00"}],
+     "direction_from_village_deg":285,"distance_km":1.4,"currently_active":true},
+    {"id":"IND002","name":"Deepak Nitrite Ltd","location":"Vapi GIDC Phase-2","village":"Vapi","type":"Chemical/Dyes",
+     "pollutants":["SO2","PM2.5"],"shifts":[{"start":"00:00","end":"08:00"},{"start":"08:00","end":"16:00"},{"start":"16:00","end":"23:59"}],
+     "direction_from_village_deg":310,"distance_km":1.8,"currently_active":true},
+    {"id":"IND003","name":"Ankleshwar Dye & Chemical Unit 7","location":"Ankleshwar GIDC","village":"Ankleshwar","type":"Dyes & Intermediates",
+     "pollutants":["SO2","PM2.5","VOC"],"shifts":[{"start":"07:00","end":"15:00"},{"start":"15:00","end":"23:00"}],
+     "direction_from_village_deg":270,"distance_km":2.1,"currently_active":false}
+]

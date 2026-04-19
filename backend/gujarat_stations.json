@@ -1,0 +1,32 @@
+[
+  {
+    "City": "Ahmedabad",
+    "Station_Name": "Maninagar, Ahmedabad - GPCB",
+    "Status": "Active"
+  },
+  {
+    "City": "Ahmedabad",
+    "Station_Name": "Chandkheda, Ahmedabad - IITM",
+    "Status": "Active"
+  },
+  {
+    "City": "Ahmedabad",
+    "Station_Name": "Raikhad, Ahmedabad - IITM",
+    "Status": "Active"
+  },
+  {
+    "City": "Ahmedabad",
+    "Station_Name": "Vatva GIDC Phase-4 - GPCB",
+    "Status": "Active"
+  },
+  {
+    "City": "Bharuch",
+    "Station_Name": "GIDC Ankleshwar - GPCB",
+    "Status": "Active"
+  },
+  {
+    "City": "Gandhinagar",
+    "Station_Name": "Sector-10 Gandhinagar - GPCB",
+    "Status": "Active"
+  }
+]

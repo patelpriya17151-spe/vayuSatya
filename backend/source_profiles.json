@@ -1,0 +1,79 @@
+[
+  {
+    "source_type": "Dust/Biomass",
+    "count": 24,
+    "avg_peak_PM25": 183.38,
+    "avg_SO2": 17.37,
+    "avg_NO2": 56.98,
+    "avg_duration_min": 55.0,
+    "season_breakdown": {
+      "Post-Monsoon": 11,
+      "Winter": 8,
+      "Summer": 5
+    },
+    "time_breakdown": {
+      "Night": 11,
+      "Evening_Rush": 6,
+      "Morning_Rush": 5,
+      "Daytime": 2
+    }
+  },
+  {
+    "source_type": "Traffic",
+    "count": 19,
+    "avg_peak_PM25": 194.1,
+    "avg_SO2": 33.23,
+    "avg_NO2": 85.09,
+    "avg_duration_min": 63.2,
+    "season_breakdown": {
+      "Summer": 14,
+      "Winter": 4,
+      "Post-Monsoon": 1
+    },
+    "time_breakdown": {
+      "Night": 14,
+      "Evening_Rush": 4,
+      "Morning_Rush": 1
+    }
+  },
+  {
+    "source_type": "Industrial",
+    "count": 63,
+    "avg_peak_PM25": 155.06,
+    "avg_SO2": 71.35,
+    "avg_NO2": 75.48,
+    "avg_duration_min": 49.5,
+    "season_breakdown": {
+      "Summer": 47,
+      "Winter": 8,
+      "Post-Monsoon": 7,
+      "Monsoon": 1
+    },
+    "time_breakdown": {
+      "Night": 37,
+      "Evening_Rush": 17,
+      "Morning_Rush": 6,
+      "Daytime": 3
+    }
+  },
+  {
+    "source_type": "Mixed",
+    "count": 80,
+    "avg_peak_PM25": 123.03,
+    "avg_SO2": 28.25,
+    "avg_NO2": 46.88,
+    "avg_duration_min": 43.3,
+    "season_breakdown": {
+      "Post-Monsoon": 29,
+      "Winter": 26,
+      "Summer": 21,
+      "Monsoon": 4
+    },
+    "time_breakdown": {
+      "Night": 40,
+      "Evening_Rush": 23,
+      "Daytime": 9,
+      "Morning_Rush": 8
+    }
+  }
+]

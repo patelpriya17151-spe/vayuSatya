@@ -1,0 +1,122 @@
+{
+  "generated_at": "2026-04-19T01:08:50.532402",
+  "data_source": "CPCB CAAQMS \u2014 Maninagar, Ahmedabad - GPCB (TS-PS9-2.csv)",
+  "data_range": "Jan 2024 \u2013 Apr 2026",
+  "total_readings": 80065,
+  "station_info": {
+    "name": "Maninagar, Ahmedabad - GPCB",
+    "lat": 22.9968,
+    "lon": 72.5974,
+    "state": "Gujarat",
+    "city": "Ahmedabad",
+    "network": "CPCB CAAQMS"
+  },
+  "current_aqi": {
+    "pm25": 52.11,
+    "aqi": 87.1,
+    "category": "Satisfactory",
+    "as_of": "2026-04-14"
+  },
+  "seasonal_stats": {
+    "Winter": {
+      "pm25": 53.5,
+      "so2": 29.5,
+      "no2": 43.4,
+      "pm10": 124.8,
+      "co": 0.51
+    },
+    "Summer": {
+      "pm25": 39.8,
+      "so2": 37.7,
+      "no2": 37.9,
+      "pm10": 111.2,
+      "co": 0.92
+    },
+    "Monsoon": {
+      "pm25": 27.2,
+      "so2": 25.6,
+      "no2": 20.4,
+      "pm10": 74.5,
+      "co": 0.6
+    },
+    "Post-Monsoon": {
+      "pm25": 54.6,
+      "so2": 28.1,
+      "no2": 27.6,
+      "pm10": 116.1,
+      "co": 0.77
+    }
+  },
+  "surge_summary": {
+    "total": 186,
+    "by_source": {
+      "Mixed": 80,
+      "Industrial": 63,
+      "Dust/Biomass": 24,
+      "Traffic": 19
+    },
+    "worst_event": {
+      "date": "2025-10-20",
+      "peak_pm25": 899.31,
+      "source": "Traffic"
+    }
+  },
+  "gujarat_stations": [
+    {
+      "name": "Maninagar, Ahmedabad - GPCB",
+      "status": "Live"
+    },
+    {
+      "name": "Chandkheda, Ahmedabad - IITM",
+      "status": "Live"
+    },
+    {
+      "name": "Raikhad, Ahmedabad - IITM",
+      "status": "Live"
+    },
+    {
+      "name": "Vatva GIDC Phase-4 - GPCB",
+      "status": "Live"
+    },
+    {
+      "name": "GIDC Ankleshwar - GPCB",
+      "status": "Live"
+    },
+    {
+      "name": "Sector-10 Gandhinagar - GPCB",
+      "status": "Live"
+    }
+  ],
+  "aqi_breakpoints": [
+    {
+      "range": "0-50",
+      "category": "Good",
+      "color": "#22c55e"
+    },
+    {
+      "range": "51-100",
+      "category": "Satisfactory",
+      "color": "#84cc16"
+    },
+    {
+      "range": "101-200",
+      "category": "Moderate",
+      "color": "#eab308"
+    },
+    {
+      "range": "201-300",
+      "category": "Poor",
+      "color": "#f97316"
+    },
+    {
+      "range": "301-400",
+      "category": "Very Poor",
+      "color": "#ef4444"
+    },
+    {
+      "range": "401-500",
+      "category": "Severe",
+      "color": "#7c3aed"
+    }
+  ]
+}
