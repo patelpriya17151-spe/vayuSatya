@@ -249,6 +249,6 @@ if __name__ == "__main__":
         "probable_industries": [{}]
     }
     buf = generate_form_a(test_result, "Rameshbhai Patel", "Vapi", "Vapi Gram Panchayat")
-    with open("/tmp/test_form_a.pdf", "wb") as f:
+    with open("test_form_a.pdf", "wb") as f:
         f.write(buf.read())
-    print("PDF generated: /tmp/test_form_a.pdf")
+    print("PDF generated: test_form_a.pdf")
