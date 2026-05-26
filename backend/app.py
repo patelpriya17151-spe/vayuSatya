@@ -6,10 +6,15 @@ import io
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
+import sys
 
-# Change to backend dir so imports work
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(os.path.dirname(__file__), '../vayusatya_api/.env.txt'))
+# Add backend directory to path
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
+# Load environment variables
+load_dotenv(os.path.join(os.path.dirname(backend_dir), 'vayusatya_api/.env.txt'))
 OWM_API_KEY = os.getenv("OWM_API_KEY", "")
 LAT = 22.9968
 LON = 72.5974
@@ -30,7 +35,7 @@ def index():
             <h1 style="color: #10B981;">Backend is running successfully! ✅</h1>
             <p style="font-size: 18px; color: #555;">This is an API-only server without a user interface here.</p>
             <p style="font-size: 18px;">To view and interact with the application, please open the Frontend link:</p>
-            <a href="http://localhost:8000" style="display: inline-block; background: #3B82F6; color: white; padding: 10px 20px; font-size: 18px; text-decoration: none; border-radius: 8px;">Go to Frontend Dashboard</a>
+            <a href="http://localhost:8000" style="display: inline-block; background: #3B82F6; color: white; padding: 10px 20px; font-size: 18px; text-decoration: none; border-radius: 8px;">Go to Frontend</a>
         </body>
     </html>
     """
