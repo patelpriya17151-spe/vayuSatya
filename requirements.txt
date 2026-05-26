@@ -3,6 +3,7 @@ pandas
 reportlab
 requests
 python-dotenv
+gunicorn
 
 # Additional recommended dependencies
 numpy
